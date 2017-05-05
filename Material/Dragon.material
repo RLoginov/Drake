@@ -1,0 +1,14 @@
+material Dragon
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Dragon.jpeg
+			}
+		}
+	}
+}
+

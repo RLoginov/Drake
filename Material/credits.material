@@ -1,0 +1,14 @@
+material credits
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture credits.png
+			}
+		}
+	}
+}
+

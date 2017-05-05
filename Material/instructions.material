@@ -1,0 +1,15 @@
+material instructions
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture instructions.png
+			}
+		}
+	}
+}
+
+

@@ -1,0 +1,14 @@
+material splash-screen
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture splash-screen.jpg
+			}
+		}
+	}
+}
+
