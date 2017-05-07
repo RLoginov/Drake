@@ -57,6 +57,8 @@ public:
 	OIS::InputManager* oisInputManager;
     OIS::Mouse*        mouse;
     OIS::Keyboard*     keyboard;
+    Ogre::Vector3      clickPoint;
+
 
     bool lShiftDown;
 

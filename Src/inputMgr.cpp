@@ -147,8 +147,36 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg)
 
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    std::cout << "mouse clicked" << std::endl;
+    Ogre::Ray mouseRay;
+    Ogre::Real screenWidth;
+    Ogre::Real screenHeight;
+    Ogre::Real offsetX;
+    Ogre::Real offsetY;
+    std::pair<bool, float> result;
+    Entity381* nearest;
+
+    //std::cout << "mouse clicked" << std::endl;
   	if (engine->uiMgr->mTrayMgr->injectMouseDown(arg, id)) return true;
+
+
+    screenWidth = Ogre::Root::getSingleton().getAutoCreatedWindow()->getWidth();
+    screenHeight = Ogre::Root::getSingleton().getAutoCreatedWindow()->getHeight();
+
+    offsetX = arg.state.X.abs / screenWidth;
+    offsetY = arg.state.Y.abs / screenHeight;
+
+    mouseRay = engine->gfxMgr->ogreCamera->getCameraToViewportRay(offsetX, offsetY);
+    result = mouseRay.intersects(engine->gameMgr->plane);
+
+    if (result.first)
+    {
+  	  clickPoint = mouseRay.getPoint(result.second);
+
+	  engine->gameMgr->createFireball();
+
+	  engine->gameMgr->fireballActive = true;
+    }
+
   	return true;
 }
 

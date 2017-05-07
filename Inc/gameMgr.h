@@ -30,9 +30,8 @@ private:
 	std::vector<std::vector<int> > getHeightMatrix(const std::string& filename);
     void genCity(const std::vector<std::vector<int> >& map);
 
-    void createParticles();
+    void createFire(Ogre::Vector3 position);
     void createMissile();
-
 
 public:
 	GameMgr(Engine *engine);
@@ -42,11 +41,19 @@ public:
 	virtual void loadLevel();
 	virtual void stop();
 	
+    void createFireball();
+    void shootFireball(Ogre::SceneNode* fireballNode, float dt);
+
 
 	//---------------------------------
 
 	Ogre::Plane plane;
-	Entity381* cube;
+	int headCounter, fireballCounter;
+	int xSpawn, zSpawn;
+	Ogre::SceneNode* fireballNode;
+	bool fireballActive;
+	Ogre::Vector3 fireballPos;
+	Ogre::Vector3 fireballTarget;
 };
 
 

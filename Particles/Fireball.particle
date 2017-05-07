@@ -1,8 +1,8 @@
 particle_system Fire/Fireball
  {
     material        Examples/Flare
-    particle_width  100
-    particle_height 100
+    particle_width  250
+    particle_height 250wwwww
     cull_each       false
     quota           100
     billboard_type  point

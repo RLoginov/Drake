@@ -39,20 +39,6 @@ void Renderable::Tick(float dt)
   }
 
   entity->ogreSceneNode->showBoundingBox(false);
-
-
-
-
-	entity->ogreSceneNode->setPosition(entity->pos);
-	entity->ogreSceneNode->setOrientation(Ogre::Quaternion::IDENTITY);
-	entity->ogreSceneNode->yaw(Ogre::Radian(-entity->heading));
-	if (entity->isSelected)
-		entity->ogreSceneNode->showBoundingBox(true);
-	else
-		entity->ogreSceneNode->showBoundingBox(false);
-
-
-
 }
 
 Physics::Physics(Entity381 * ent): Aspect(ent) {
@@ -69,35 +55,12 @@ void Physics::Tick(float dt)
   if(this->entity->meshfile == "ogrehead.mesh")
   {
 
-    entity->speed += entity->acceleration*dt;
+    entity->speed = 600;
     entity->pos += entity->vel * dt;
     entity->heading = entity->desiredHeading;
   }
 
   entity->vel = Ogre::Vector3(cos(entity->heading) * entity->speed, 0, sin(entity->heading) * entity->speed);
-
-
-
-
-
-	if(entity->speed < entity->desiredSpeed){
-		//cout << endl << "gsdhgjd" << endl << endl;
-		entity->speed += entity->acceleration *dt;
-	}
-	if(entity->speed > entity->desiredSpeed)
-		entity->speed -= entity->acceleration *dt;
-
-	//entity->speed = std::max(entity->minSpeed, std::min(entity->speed, entity->maxSpeed)); //clamp
-
-	if(entity->heading < entity->desiredHeading)
-		entity->heading += entity->turnRate * dt;
-	if(entity->heading > entity->desiredHeading)
-		entity->heading -= entity->turnRate * dt;
-
-	//entity->heading = FixAngle(entity->heading); // between -pi and pi
-
-	entity->vel = Ogre::Vector3(cos(entity->heading) * entity->speed, 0, sin(entity->heading) * entity->speed);
-	entity->pos += entity->vel * dt;
 
 }
 
