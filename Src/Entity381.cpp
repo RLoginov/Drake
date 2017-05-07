@@ -89,7 +89,7 @@ Dragon::~Dragon()
 
 Building::Building(Ogre::Vector3 pos, float heading) : Entity381(EntityType::DRAKE, pos, heading)
 {
-	this->meshfile = "cube.mesh";
+	this->meshfile = "Cube.001.mesh";
 	this->acceleration = 0.0f;
 	this->turnRate = 0.0f;
 }

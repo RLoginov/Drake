@@ -19,8 +19,11 @@ using std::fstream;
 using std::getline;
 using std::string;
 
-GameMgr::GameMgr(Engine *engine): Mgr(engine){
-
+GameMgr::GameMgr(Engine *engine): Mgr(engine)
+{
+  headCounter = 0;
+  xSpawn = 0;
+  zSpawn = 0;
 }
 
 GameMgr::~GameMgr(){
@@ -29,6 +32,8 @@ GameMgr::~GameMgr(){
 
 void GameMgr::init()
 {
+  fireballActive = false;
+  fireballPos = Ogre::Vector3::ZERO;
 }
 
 
@@ -38,8 +43,6 @@ void GameMgr::loadLevel()
 	createSky();
 	createPlane();
 	createCity("map0.txt");
-	createParticles();
-	createMissile();
 }
 
 void GameMgr::stop(){
@@ -48,7 +51,21 @@ void GameMgr::stop(){
 
 void GameMgr::tick(float dt)
 {
+  if(headCounter < 1000)
+  {
+    createMissile();
 
+    headCounter++;
+
+    xSpawn += 100;
+
+    zSpawn += 100;
+  }
+
+  if(fireballActive)
+  {
+    shootFireball(fireballNode, dt);
+  }
 }
 
 void GameMgr::createEnts()
@@ -124,14 +141,14 @@ std::vector<std::vector<int> > GameMgr::getHeightMatrix(const string& filename)
 
 void GameMgr::genCity(const std::vector<std::vector<int> >& map)
 {
-  Vector3 startPos = Ogre::Vector3(-7500.0f, 200.0f, -7500.0f);
-  Vector3 buildScale = Ogre::Vector3(5.0f, 5.0f, 5.0f);
+  Vector3 startPos = Ogre::Vector3(-7500.0f, -2500.0f, -7500.0f);
+  Vector3 buildScale = Ogre::Vector3(250.0f, 250.0f, 250.0f);
 
   Vector3 spawnPos = startPos;
-  Ogre::Real space = 200.0f;
+  Ogre::Real space = 2.0f;
   Ogre::Real columnSpace = space * buildScale.x;
   Ogre::Real rowSpace = space * buildScale.z;
-  Ogre::Real heightMultiplier = 100.0f;
+  Ogre::Real heightMultiplier = 200.0f;
   int height;
   Entity381* ent = NULL;
 
@@ -147,25 +164,68 @@ void GameMgr::genCity(const std::vector<std::vector<int> >& map)
       height = (map[row][col] != 0) ? rand() % 9 + 1 : 0;
       spawnPos.y = startPos.y + height * heightMultiplier;
 
-      ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
-      ent->ogreSceneNode->scale(buildScale);
+      if (map[row][col] != 0)
+      {
+        ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
+        ent->ogreSceneNode->setScale(buildScale);
+      }
+      else
+      {
+        spawnPos.y = 200.0f;
+        ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
+        ent->ogreSceneNode->setScale(250.0f, 100.0f, 250.0f);
+        ent->ogreSceneNode->roll(Degree(90));
+        ent->ogreEntity->setMaterialName("Examples/Rockwall");
+      }
+
     }
   }
 }
 
-void GameMgr::createParticles()
+void GameMgr::createFireball()
 {
+
 	 ParticleSystem* fireballParticle1 = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fireball1", "Fire/Fireball");
-	 SceneNode* fireballNode1 = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireballParticle1");
-	 fireballNode1->attachObject(fireballParticle1);
-	 fireballNode1->setPosition(0, 4000, 0);
+	 fireballNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireballParticle1");
+	 fireballNode->attachObject(fireballParticle1);
+	 fireballNode->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
+	 fireballNode->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
 
-/*	 ParticleSystem* fireballParticle2 = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fireball2", "Fire/Fireball");
-	 SceneNode* fireballNode2 = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireballParticle2");
-	 fireballNode2->attachObject(fireballParticle2);
-	 fireballNode2->setPosition(200, 4000, 0); */
+}
 
-	 ParticleSystem* fireParticle = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fire", "Fire/Fire");
+void GameMgr::shootFireball(Ogre::SceneNode* fireballNode, float dt)
+{
+ 	float target;
+
+    Ogre::Vector3 diff = engine->inputMgr->clickPoint - fireballNode->getPosition();
+
+    //target = atan2(diff.z, diff.x)
+
+	fireballNode->translate(diff * dt, Ogre::Node::TS_LOCAL);
+
+	fireballPos = fireballNode->getPosition();
+
+	if(fireballPos == Ogre::Vector3(0, 4500,-100))
+	{
+		std::cout << "HERE'S JOHNNY" << std::endl;
+
+	    fireballActive = false;
+
+/*	    // create a particle system named explosions using the explosionTemplate
+		ParticleSystem* EXUPROSION = engine->gfxMgr->ogreSceneManager->createParticleSystem("explosions", "explosionTemplate");
+
+		// fast forward 1 second  to the point where the particle has been emitted
+		EXUPROSION->fastForward(1.0);
+
+		// attach the particle system to a scene node
+		Ogre::SceneNode* explodeNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("EXUPROSION");
+		explodeNode->attachObject(EXUPROSION); */
+	}
+}
+
+void GameMgr::createFire(Ogre::Vector3 position)
+{
+	 ParticleSystem* fireParticle = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fire1", "Fire/Fire");
 	 SceneNode* fireNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireParticle");
 	 fireNode->attachObject(fireParticle);
 	 fireNode->setPosition(0, 200, 0);
@@ -176,9 +236,8 @@ void GameMgr::createMissile()
 {
 	Entity381* ent;
 
-	ent = engine->entityMgr->CreateEntity(EntityType::MISSILE, Ogre::Vector3(-500, 4500, 500), 0, 0);
+	ent = engine->entityMgr->CreateEntity(EntityType::MISSILE, Ogre::Vector3(xSpawn, 4500, zSpawn), 0, 0);
 	ent->leader = engine->entityMgr->selectedEntity;
 }
-
 
 
