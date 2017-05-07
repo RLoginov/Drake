@@ -1,0 +1,15 @@
+material plus
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture plus.png
+			}
+		}
+	}
+}
+
+

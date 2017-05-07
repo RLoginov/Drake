@@ -18,6 +18,7 @@ public:
 
 	virtual void Tick(float dt) = 0;
 	Entity381 *entity;
+	ASPECT_TYPE aspectType;
 };
 
 class Renderable: public Aspect {

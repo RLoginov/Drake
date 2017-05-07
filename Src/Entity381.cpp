@@ -72,8 +72,13 @@ void Entity381::Tick(float dt){
 
 Dragon::Dragon(Ogre::Vector3 pos, float heading) : Entity381(EntityType::DRAKE, pos, heading){
 	this->meshfile = "dragon.mesh";
-	this->acceleration = 1.0f;
+	this->acceleration = 500.0f;
 	this->turnRate = 0.1f;
+	this->speed = 0;
+	this->desiredSpeed = 0;
+	this->desiredHeading = 0;
+	this->maxSpeed = 5000;
+	this->minSpeed = 0;
 }
 
 Dragon::~Dragon()

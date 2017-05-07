@@ -25,12 +25,15 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	minutesRemaining = 1;
 	lives = 3;
 	gameStart = false;
+	plus = 0;
+
+
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
 	engine->gfxMgr->ogreSceneManager->addRenderQueueListener(mOverlaySystem);
 
-	Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
+	//Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
 
 	// display default lives and time remaining
 	livesRemainingToString();
@@ -46,6 +49,11 @@ void UiMgr::init(){
     mInputContext.mKeyboard = engine->inputMgr->keyboard;
     mInputContext.mMouse = engine->inputMgr->mouse;
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", engine->gfxMgr->ogreRenderWindow, mInputContext, this);
+
+    //mTrayMgr->hideCursor();
+    //cout << endl << 1 << endl;
+    //mTrayMgr->showCursor();
+    //cout << endl << 2 << endl;
 }
 
 void UiMgr::stop(){
@@ -64,6 +72,15 @@ void UiMgr::loadLevel(){
 	//mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "InfoPanel", "my text", 500, 600);
 	//testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
 	//timeLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "time", timeText, 200);
+
+
+
+	mTrayMgr->showCursor("plus");
+
+	mTrayMgr->getCursorLayer();
+	plus = mTrayMgr->getCursorContainer();
+	plusImage = mTrayMgr->getCursorImage();
+	plusImage->setPosition(-10, -10);
 }
 
 void UiMgr::tick(float dt){

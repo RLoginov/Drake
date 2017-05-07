@@ -34,7 +34,7 @@ InputMgr::InputMgr(Engine *engine) : Mgr(engine){
 	pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
 #elif defined OIS_LINUX_PLATFORM
 	pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-	pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+	pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("true")));
 	pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
 	pl.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));
 #endif
@@ -74,6 +74,11 @@ void InputMgr::tick(float dt){
 
 	UpdatePosition(dt);
 	UpdateCamera(dt);
+
+
+
+
+	//UpdateDesiredSpeedHeading(dt);
 }
 
 void InputMgr::stop(){
@@ -175,13 +180,6 @@ void InputMgr::UpdatePosition(float dt)
 			  dirVec.z -= fly;
 	  }
 
-	  if (keyboard->isKeyDown(OIS::KC_S))
-	  {
-		  if (lShiftDown)
-			  dirVec.z += rush;
-		  else
-			  dirVec.z += fly;
-	  }
 
 /*	  if (keyboard->isKeyDown(OIS::KC_R))
 	  {
@@ -215,22 +213,6 @@ void InputMgr::UpdatePosition(float dt)
 			  dirVec.y -= fly;
 		  }
 	  } */
-
-	  if (keyboard->isKeyDown(OIS::KC_A))
-	  {
-		  if (keyboard->isKeyDown(OIS::KC_LSHIFT))
-			  dirVec.x -= rush;
-		  else
-			  dirVec.x -= fly;
-	  }
-
-	  if (keyboard->isKeyDown(OIS::KC_D))
-	  {
-		  if (keyboard->isKeyDown(OIS::KC_LSHIFT))
-			  dirVec.x += rush;
-		  else
-			  dirVec.x += fly;
-	  }
 
 	  if (keyboard->isKeyDown(OIS::KC_Q))
 	  {
@@ -329,6 +311,44 @@ void InputMgr::UpdateCamera(float dt){
 	  }
 
 	  engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+}
 
+
+
+
+void InputMgr::UpdateDesiredSpeedHeading(float dt){
+	keyboardTimer -= dt;
+
+	//cout << endl << engine->entityMgr->selectedEntity->desiredSpeed << endl << endl;
+
+	if(engine->entityMgr->selectedEntity){
+
+		if((keyboardTimer < 0) && keyboard->isKeyDown(OIS::KC_W)){
+			keyboardTimer = keyTime;
+			//cout << engine->entityMgr->selectedEntity->desiredSpeed << endl;
+			//cout << engine->entityMgr->selectedEntity->speed << endl << endl;
+			engine->entityMgr->selectedEntity->desiredSpeed += 10;
+			//engine->entityMgr->selectedEntity->ogreSceneNode->getParent()->desiredSpeed += 10;
+		}
+		if((keyboardTimer < 0) && keyboard->isKeyDown(OIS::KC_S)){
+			keyboardTimer = keyTime;
+			engine->entityMgr->selectedEntity->desiredSpeed -= 10;
+		}
+		engine->entityMgr->selectedEntity->desiredSpeed =
+				std::max(engine->entityMgr->selectedEntity->minSpeed,
+						std::min(engine->entityMgr->selectedEntity->maxSpeed,
+								engine->entityMgr->selectedEntity->desiredSpeed));
+
+
+		if((keyboardTimer < 0) && keyboard->isKeyDown(OIS::KC_A)){
+			keyboardTimer = keyTime;
+			engine->entityMgr->selectedEntity->desiredHeading -= 0.3f;
+		}
+		if((keyboardTimer < 0) && keyboard->isKeyDown(OIS::KC_D)){
+			keyboardTimer = keyTime;
+			engine->entityMgr->selectedEntity->desiredHeading += 0.3f;
+		}
+		//entityMgr->selectedEntity->desiredHeading = FixAngle(entityMgr->selectedEntity->desiredHeading);
+	}
 }
 

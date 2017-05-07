@@ -59,6 +59,8 @@ public:
     OIS::Keyboard*     keyboard;
 
     bool lShiftDown;
+
+    void UpdateDesiredSpeedHeading(float dt);
 };
 
 

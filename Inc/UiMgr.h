@@ -73,6 +73,9 @@ public:
 	void livesRemainingToString();
 
 	bool gameStart;
+
+	Ogre::OverlayContainer* plus;
+	Ogre::OverlayElement* plusImage;
 };
 
 #endif /* INC_UIMGR_H_ */
