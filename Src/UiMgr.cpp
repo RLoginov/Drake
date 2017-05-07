@@ -62,7 +62,7 @@ void UiMgr::stop(){
 
 void UiMgr::loadLevel(){
 	// load in widgets (buttons, menus, labels, etc.)
-	testButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "Start Game");
+	testButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "MyButton", "Start Game");
 	//mTrayMgr->destroyWidget("MyButton");
 	//testMenu = mTrayMgr->createLongSelectMenu(OgreBites::TL_TOPRIGHT, "MyMenu", "Menu", 500, 100, 50);
 	//testMenu->addItem("cat");
