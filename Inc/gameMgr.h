@@ -46,7 +46,6 @@ public:
 	//---------------------------------
 
 	Ogre::Plane plane;
-	Entity381* cube;
 };
 
 

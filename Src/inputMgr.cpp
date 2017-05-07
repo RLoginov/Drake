@@ -148,6 +148,8 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg)
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
     std::cout << "mouse clicked" << std::endl;
+    if(engine->uiMgr->fireballsReady > 0)
+       engine->uiMgr->fireballsReady--;
   	if (engine->uiMgr->mTrayMgr->injectMouseDown(arg, id)) return true;
   	return true;
 }
