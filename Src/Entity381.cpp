@@ -41,6 +41,8 @@ Entity381::Entity381(EntityType entType, Ogre::Vector3 pos, float heading)
 	this->aspects.push_front(ai);
 
 	DefaultInit();
+
+	hit = false;
 }
 
 Entity381::~Entity381(){

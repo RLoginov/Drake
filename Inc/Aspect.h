@@ -9,7 +9,6 @@
 #include "../Inc/Entity381.h"
 #include "../Inc/Types.h"
 
-
 class Aspect {
 
 public:
@@ -43,6 +42,8 @@ public:
 	virtual void Tick(float dt);
 
 	void checkForCollision();
+
+	float hitTimer;
 };
 
 #endif /* ASPECT_H_ */

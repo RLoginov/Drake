@@ -119,20 +119,24 @@ void UiMgr::tick(float dt){
 			}
 
 			// ran out of time
-			if(minutesRemaining == 0 && tensSecondsRemaining == 0 && onesSecondsRemaining == 0)
+			if((minutesRemaining == 0 && tensSecondsRemaining == 0 && onesSecondsRemaining == 0) || lives == 0)
 			{
 				gameStart = false;
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
+				mTrayMgr->destroyWidget("fireball");
 				mTrayMgr->showBackdrop("credits");
 			}
 		}
 
+		if(gameStart != false)
+		{
 		fireballsToString();
 		timeRemainingToString();
 		timeLabel->setCaption(timeText);
 		testLabel->setCaption(livesText);
 		fireballLabel->setCaption(fireballText);
+		}
 	}
 }
 
