@@ -141,14 +141,14 @@ std::vector<std::vector<int> > GameMgr::getHeightMatrix(const string& filename)
 
 void GameMgr::genCity(const std::vector<std::vector<int> >& map)
 {
-  Vector3 startPos = Ogre::Vector3(-7500.0f, 200.0f, -7500.0f);
-  Vector3 buildScale = Ogre::Vector3(5.0f, 5.0f, 5.0f);
+  Vector3 startPos = Ogre::Vector3(-7500.0f, -2500.0f, -7500.0f);
+  Vector3 buildScale = Ogre::Vector3(250.0f, 250.0f, 250.0f);
 
   Vector3 spawnPos = startPos;
-  Ogre::Real space = 200.0f;
+  Ogre::Real space = 2.0f;
   Ogre::Real columnSpace = space * buildScale.x;
   Ogre::Real rowSpace = space * buildScale.z;
-  Ogre::Real heightMultiplier = 100.0f;
+  Ogre::Real heightMultiplier = 200.0f;
   int height;
   Entity381* ent = NULL;
 
@@ -164,8 +164,20 @@ void GameMgr::genCity(const std::vector<std::vector<int> >& map)
       height = (map[row][col] != 0) ? rand() % 9 + 1 : 0;
       spawnPos.y = startPos.y + height * heightMultiplier;
 
-      ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
-      ent->ogreSceneNode->scale(buildScale);
+      if (map[row][col] != 0)
+      {
+        ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
+        ent->ogreSceneNode->setScale(buildScale);
+      }
+      else
+      {
+        spawnPos.y = 200.0f;
+        ent = engine->entityMgr->CreateEntity(EntityType::BUILDING, spawnPos);
+        ent->ogreSceneNode->setScale(250.0f, 100.0f, 250.0f);
+        ent->ogreSceneNode->roll(Degree(90));
+        ent->ogreEntity->setMaterialName("Examples/Rockwall");
+      }
+
     }
   }
 }

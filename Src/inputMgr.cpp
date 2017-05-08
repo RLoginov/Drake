@@ -147,6 +147,7 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg)
 
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
+    std::cout << "mouse clicked" << std::endl;
     Ogre::Ray mouseRay;
     Ogre::Real screenWidth;
     Ogre::Real screenHeight;
@@ -154,8 +155,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
     Ogre::Real offsetY;
     std::pair<bool, float> result;
     Entity381* nearest;
+    if(engine->uiMgr->fireballsReady > 0)
+       engine->uiMgr->fireballsReady--;
 
-    //std::cout << "mouse clicked" << std::endl;
   	if (engine->uiMgr->mTrayMgr->injectMouseDown(arg, id)) return true;
 
 

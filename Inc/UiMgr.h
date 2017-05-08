@@ -59,6 +59,7 @@ public:
 	Ogre::String livesText;
 	Ogre::String livesRemainingString;
 	OgreBites::Label* testLabel;
+	OgreBites::Label* fireballLabel;
 	float instructionScreenTimer;
 
 	Ogre::String timeText;
@@ -71,8 +72,14 @@ public:
 
 	void timeRemainingToString();
 	void livesRemainingToString();
+	void fireballsToString();
 
 	bool gameStart;
+
+	Ogre::String fireballText;
+	Ogre::String fireballString;
+	int fireballTimer;
+	int fireballsReady;
 
 	Ogre::OverlayContainer* plus;
 	Ogre::OverlayElement* plusImage;
