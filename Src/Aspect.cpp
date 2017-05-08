@@ -102,6 +102,6 @@ void AI::checkForCollision()
   if(entity->pos.x == entity->leader->ogreSceneNode->getPosition().x ||
 	 entity->pos.z == entity->leader->ogreSceneNode->getPosition().z)
   {
-    std::cout << "AAAAAAAAAAAA" << std::endl;
+
   }
 }
