@@ -65,7 +65,7 @@ void Physics::Tick(float dt)
 }
 
 AI::AI(Entity381 * ent): Aspect(ent) {
-
+	hitTimer = 1;
 }
 
 AI::~AI()
@@ -77,6 +77,7 @@ AI::~AI()
 void AI::Tick(float dt)
 {
  Ogre::Vector3 diff;
+ hitTimer -= dt;
 
   if(this->entity->meshfile == "ogrehead.mesh")
   {
@@ -85,13 +86,19 @@ void AI::Tick(float dt)
     entity->desiredHeading = atan2(diff.z, diff.x);
     entity->desiredSpeed = entity->maxSpeed;
 
-    checkForCollision();
+    //if(hitTimer < 0)
+    //{
+    	//hitTimer = 1;
+		checkForCollision();
+    //}
   }
 
 }
 
 void AI::checkForCollision()
 {
+
+
   if(entity->pos.x == entity->leader->ogreSceneNode->getPosition().x ||
 	 entity->pos.z == entity->leader->ogreSceneNode->getPosition().z)
   {

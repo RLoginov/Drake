@@ -65,6 +65,8 @@ public:
 	unsigned int audioId;
 
 	std::list<Aspect*> aspects;
+
+	bool hit;
 };
 
 class Dragon: public Entity381

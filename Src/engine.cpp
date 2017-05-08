@@ -54,9 +54,12 @@ void Engine::tickAll(float dt){
 	gfxMgr->tick(dt);
 	inputMgr->tick(dt);
 	entityMgr->tick(dt);
-	gameMgr->tick(dt);
+	//gameMgr->tick(dt);
 	uiMgr->tick(dt);
 	//soundMgr->tick(dt);
+
+	if(uiMgr->gameStart == true)
+		gameMgr->tick(dt);
 }
 
 void Engine::shutdown(){
