@@ -185,6 +185,8 @@ void GameMgr::shootFireball(Ogre::SceneNode* fireballNode, float dt)
 {
  	float target;
 
+ 	engine->inputMgr->clickPoint.y = 4500;
+
     Ogre::Vector3 diff = engine->inputMgr->clickPoint - fireballNode->getPosition();
 
     //target = atan2(diff.z, diff.x)
