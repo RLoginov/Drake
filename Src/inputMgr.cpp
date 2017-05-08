@@ -194,8 +194,8 @@ void InputMgr::UpdatePosition(float dt)
 {
 	float fly = 1000.0f;
 	float rush = 2000.0f;
-	float turn = 0.1f;
-	float quickturn = 0.2f;
+	float turn = 0.5f;
+	float quickturn = 0.7f;
 
 	Ogre::Vector3 temp;
 

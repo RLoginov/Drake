@@ -190,7 +190,7 @@ void UiMgr::buttonHit(OgreBites::Button *b){
     		gameStart = true;
     		tensSecondsRemaining = 0;
     		onesSecondsRemaining = 0;
-    		minutesRemaining = 1;
+    		minutesRemaining = 2;
     		lives = 3;
     		testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
     		fireballLabel = mTrayMgr->createLabel(OgreBites::TL_TOP, "fireball", fireballText, 200);

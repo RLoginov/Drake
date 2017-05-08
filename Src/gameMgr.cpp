@@ -22,8 +22,8 @@ using std::string;
 GameMgr::GameMgr(Engine *engine): Mgr(engine)
 {
   headCounter = 0;
-  xSpawn = 0;
-  zSpawn = 0;
+  xSpawn = -100;
+  zSpawn = -100;
 }
 
 GameMgr::~GameMgr(){
