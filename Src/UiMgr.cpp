@@ -127,12 +127,27 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("fireball");
 				mTrayMgr->showBackdrop("credits");
 			}
+
+
+			for (std::list<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it !=
+				 engine->entityMgr->entities.end(); ++it)
+			{
+              if((*it)->meshfile == "ogrehead.mesh")
+              {
+                if((*it)->hit == true)
+                {
+                  (*it)->hit = false;
+                  lives--;
+                }
+              }
+			}
 		}
 
 		if(gameStart != false)
 		{
 		fireballsToString();
 		timeRemainingToString();
+		livesRemainingToString();
 		timeLabel->setCaption(timeText);
 		testLabel->setCaption(livesText);
 		fireballLabel->setCaption(fireballText);

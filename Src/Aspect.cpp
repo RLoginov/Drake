@@ -87,15 +87,11 @@ void AI::Tick(float dt)
     entity->desiredSpeed = entity->maxSpeed;
 
     //if(hitTimer < 0)
-    //{
-    	//hitTimer = 1;
-		checkForCollision();
-    //}
+	   checkForCollision(hitTimer);
   }
-
 }
 
-void AI::checkForCollision()
+void AI::checkForCollision(float dt)
 {
 
 
@@ -103,5 +99,9 @@ void AI::checkForCollision()
 	 entity->pos.z == entity->leader->ogreSceneNode->getPosition().z)
   {
     std::cout << "AAAAAAAAAAAA" << std::endl;
+    //hitTimer = 1;
+    entity->hit = true;
   }
+
+  //entity->hit = false;
 }
