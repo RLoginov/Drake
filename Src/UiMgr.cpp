@@ -28,7 +28,7 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	plus = 0;
 	fireballLabel = 0;
 	fireballTimer = 2;
-	fireballsReady = 21;
+	fireballsReady = 51;
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
@@ -136,11 +136,25 @@ void UiMgr::tick(float dt){
               {
                 if((*it)->hit == true)
                 {
-                  (*it)->hit = false;
                   lives--;
+                  break;
                 }
               }
+
 			}
+
+			for (std::list<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it !=
+							 engine->entityMgr->entities.end(); ++it)
+						{
+			              if((*it)->meshfile == "ogrehead.mesh")
+			              {
+			                if((*it)->hit == true)
+			                {
+			                  (*it)->hit = false;
+			                }
+			              }
+
+						}
 		}
 
 		if(gameStart != false)

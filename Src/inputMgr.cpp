@@ -154,13 +154,14 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
     Ogre::Real offsetY;
     std::pair<bool, float> result;
 
+    if(engine->uiMgr->fireballsReady > 0)
+       engine->uiMgr->fireballsReady--;
+
   	if (engine->uiMgr->mTrayMgr->injectMouseDown(arg, id)) return true;
 
     if(engine->uiMgr->fireballsReady == 0)
        return true;
 
-    if(engine->uiMgr->fireballsReady > 0)
-       engine->uiMgr->fireballsReady--;
 
 
     screenWidth = Ogre::Root::getSingleton().getAutoCreatedWindow()->getWidth();

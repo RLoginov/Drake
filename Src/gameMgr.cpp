@@ -203,7 +203,7 @@ void GameMgr::createFireballs()
 
 void GameMgr::createFires()
 {
-	for (int i = 0; i < 21; i++)
+	for (int i = 0; i < engine->uiMgr->fireballsReady; i++)
 	 {
 	 	Ogre::String number = Ogre::StringConverter::toString(i + 1);
 
