@@ -42,7 +42,7 @@ public:
 	~AI();
 	virtual void Tick(float dt);
 
-	void checkForCollision();
+	void checkForCollision(float dt);
 
 	//---------------------------
 
