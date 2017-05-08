@@ -9,7 +9,6 @@
 #include <iostream>
 #include <sstream>
 
-#include <OgreMeshManager.h>
 
 #include "../Inc/gameMgr.h"
 #include "../Inc/engine.h"
@@ -33,7 +32,11 @@ GameMgr::~GameMgr(){
 void GameMgr::init()
 {
   fireballActive = false;
-  fireballPos = Ogre::Vector3::ZERO;
+  cout << engine->uiMgr->fireballsReady << endl;
+  fireballs.resize(engine->uiMgr->fireballsReady - 1);
+  fireballNodes.resize(engine->uiMgr->fireballsReady - 1);
+  fires.resize(engine->uiMgr->fireballsReady - 1);
+  fireNodes.resize(engine->uiMgr->fireballsReady - 1);
 }
 
 
@@ -43,6 +46,8 @@ void GameMgr::loadLevel()
 	createSky();
 	createPlane();
 	createCity("map0.txt");
+	createFireballs();
+	createFires();
 }
 
 void GameMgr::stop(){
@@ -64,7 +69,7 @@ void GameMgr::tick(float dt)
 
   if(fireballActive)
   {
-    shootFireball(fireballNode, dt);
+    shootFireball(dt);
   }
 }
 
@@ -182,55 +187,56 @@ void GameMgr::genCity(const std::vector<std::vector<int> >& map)
   }
 }
 
-void GameMgr::createFireball()
+void GameMgr::createFireballs()
 {
+	for (int i = 0; i < engine->uiMgr->fireballsReady; i++)
+	 {
+	 	Ogre::String number = Ogre::StringConverter::toString(i + 1);
 
-	 ParticleSystem* fireballParticle1 = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fireball1", "Fire/Fireball");
-	 fireballNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireballParticle1");
-	 fireballNode->attachObject(fireballParticle1);
-	 fireballNode->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
-	 fireballNode->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
+	 	fireballs[i] = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fireball " + number, "Fire/Fireball");
+	 	fireballNodes[i] = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("Fireball Node " + number);
+
+	 	fireballNodes[i]->attachObject(fireballs[i]);
+	 }
 
 }
 
-void GameMgr::shootFireball(Ogre::SceneNode* fireballNode, float dt)
+void GameMgr::createFires()
 {
- 	float target;
+	for (int i = 0; i < 21; i++)
+	 {
+	 	Ogre::String number = Ogre::StringConverter::toString(i + 1);
 
- 	engine->inputMgr->clickPoint.y = 4500;
+	 	fires[i] = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fire " + number, "Fire/Fire");;
+	 	fireNodes[i] = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("Fire Node " + number);
 
-    Ogre::Vector3 diff = engine->inputMgr->clickPoint - fireballNode->getPosition();
+	 	fireNodes[i]->attachObject(fires[i]);
+	 }
 
-    //target = atan2(diff.z, diff.x)
-
-	fireballNode->translate(diff * dt, Ogre::Node::TS_LOCAL);
-
-	fireballPos = fireballNode->getPosition();
-
-	if(fireballPos == Ogre::Vector3(0, 4500,-100))
-	{
-		std::cout << "HERE'S JOHNNY" << std::endl;
-
-	    fireballActive = false;
-
-/*	    // create a particle system named explosions using the explosionTemplate
-		ParticleSystem* EXUPROSION = engine->gfxMgr->ogreSceneManager->createParticleSystem("explosions", "explosionTemplate");
-
-		// fast forward 1 second  to the point where the particle has been emitted
-		EXUPROSION->fastForward(1.0);
-
-		// attach the particle system to a scene node
-		Ogre::SceneNode* explodeNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("EXUPROSION");
-		explodeNode->attachObject(EXUPROSION); */
-	}
 }
 
-void GameMgr::createFire(Ogre::Vector3 position)
+void GameMgr::shootFireball(float dt)
 {
-	 ParticleSystem* fireParticle = engine->gfxMgr->ogreSceneManager->createParticleSystem("Fire1", "Fire/Fire");
-	 SceneNode* fireNode = engine->gfxMgr->ogreSceneManager->getRootSceneNode()->createChildSceneNode("fireParticle");
-	 fireNode->attachObject(fireParticle);
-	 fireNode->setPosition(0, 200, 0);
+   Ogre::Vector3 diff;
+
+   diff = engine->inputMgr->clickPoint - fireballNodes[engine->uiMgr->fireballsReady]->getPosition();
+
+   fireballNodes[engine->uiMgr->fireballsReady]->translate(diff * dt, Ogre::Node::TS_LOCAL);
+
+   if(fireballNodes[engine->uiMgr->fireballsReady]->getPosition().y <= 500.0f)
+   {
+      spawnFire(Ogre::Vector3(engine->inputMgr->clickPoint.x,500,engine->inputMgr->clickPoint.z));
+
+      fireballActive = false;
+   }
+}
+
+void GameMgr::spawnFire(Ogre::Vector3 position)
+{
+   if(fireballActive)
+   {
+      fireNodes[engine->uiMgr->fireballsReady]->setPosition(position);
+   }
 
 }
 

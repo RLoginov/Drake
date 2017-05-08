@@ -1,4 +1,3 @@
-// A sparkly purple fountain
 particle_system Fire/Fire
 {
     material Examples/Flare2
