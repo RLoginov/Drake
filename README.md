@@ -18,7 +18,9 @@ This Ogre3D project is exclusively built on and for lab computers of the Univers
 Controls
 --------
 Flight
-- <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>: Movement
+- <kbd>W</kbd> Move forward
+- <kbd>Q</kbd> Turn left 
+- <kbd>E</kbd> Turn right
 
 Actions
-- Right click: Launch fireball
+- Left click: Launch fireball
