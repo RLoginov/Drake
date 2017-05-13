@@ -60,7 +60,6 @@ namespace OgreSND {
 
 		//Special treatment for background source and buffer
 		ALuint backgroundMusicBuffer, backgroundMusicSource;
-                ALuint battleSoundSource; //default battle sound source, not entity specific
 		WaveInfo *backgroundWaveInfo;
 		//unsigned int scvId;
                 //unsigned int soundDictionary[FastEcslent::NENTITYTYPES];
@@ -86,7 +85,6 @@ namespace OgreSND {
 		//default methods
 		void initialize();
 		void crosslink();
-		void init();
 		void loadLevel();
 		void tick(double dtime);
 		void releaseLevel();
@@ -158,6 +156,10 @@ namespace OgreSND {
             bool playNow, bool forceRestart, float minGain );
 
         bool setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Quaternion orientation );
+
+        //----------------------------------
+
+        ALuint fireballSource, flapSource;
 
 	};
 

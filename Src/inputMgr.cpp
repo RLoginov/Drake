@@ -109,16 +109,15 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw){
 
 bool InputMgr::keyPressed(const OIS::KeyEvent &arg)
 {
-	float fly = 500.0f;
-	float rush = 500.0f;
-	float rotate = 0.1f;
 	Ogre::Vector3 temp;
-	Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
 
 	switch (arg.key)
 	{
 	  case OIS::KC_LSHIFT:
 		lShiftDown = true;
+		break;
+
+	  default:
 		break;
 	}
 	return true;
@@ -128,11 +127,15 @@ bool InputMgr::keyReleased(const OIS::KeyEvent &arg){
 
 	switch (arg.key)
 	{
-	case OIS::KC_LSHIFT:
+	  case OIS::KC_LSHIFT:
 		lShiftDown = false;
 		break;
-	case OIS::KC_TAB:
+
+	  case OIS::KC_TAB:
 		engine->entityMgr->SelectNextEntity();
+		break;
+
+	  default:
 		break;
 	}
 
@@ -163,7 +166,6 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
        return true;
 
 
-
     screenWidth = Ogre::Root::getSingleton().getAutoCreatedWindow()->getWidth();
     screenHeight = Ogre::Root::getSingleton().getAutoCreatedWindow()->getHeight();
 
@@ -176,11 +178,19 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
     if (result.first)
     {
   	  clickPoint = mouseRay.getPoint(result.second);
+   	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
+   	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
 
-  	   engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
-  	   engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
+	  switch (id)
+	  {
+	    case OIS::MB_Left:
+	      engine->soundMgr->playAudio(engine->soundMgr->fireballSource, true);
+	  	  engine->gameMgr->fireballActive = true;
+		  break;
 
-	  engine->gameMgr->fireballActive = true;
+	    default:
+		  break;
+	  }
     }
 
   	return true;
@@ -298,7 +308,8 @@ void InputMgr::UpdatePosition(float dt)
 	  } */
 
     engine->entityMgr->selectedEntity->ogreSceneNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
-	  engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+	engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+    engine->soundMgr->playAudio(engine->soundMgr->flapSource, true);
 }
 
 void InputMgr::UpdateSelection(float dt){

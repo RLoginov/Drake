@@ -47,7 +47,7 @@ void Engine::init(){
 	entityMgr->loadLevel();
 	gameMgr->loadLevel();
 	uiMgr->loadLevel();
-    //soundMgr->loadLevel();
+    soundMgr->loadLevel();
 }
 
 void Engine::tickAll(float dt){
@@ -56,7 +56,7 @@ void Engine::tickAll(float dt){
 	entityMgr->tick(dt);
 	//gameMgr->tick(dt);
 	uiMgr->tick(dt);
-	//soundMgr->tick(dt);
+	soundMgr->tick(dt);
 
 	if(uiMgr->gameStart == true)
 		gameMgr->tick(dt);

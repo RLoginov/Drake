@@ -51,11 +51,11 @@ OgreSND::SoundMgr::~SoundMgr(){
 	std::cout << "Bye audio. ....   Sounds good, bye" << std::endl;
 }
 
-void OgreSND::SoundMgr::init(){
-	initialize();
-}
 
-void OgreSND::SoundMgr::initialize(void){
+void OgreSND::SoundMgr::initialize(void)
+{
+	unsigned int sid;
+
 	this->device = alcOpenDevice(NULL);
 	if(!device){
 		std::cerr << "Sound ERROR: Bye, could not open default sound device" << std::endl;
@@ -99,26 +99,28 @@ void OgreSND::SoundMgr::initialize(void){
         }
 
 
-	unsigned int sid;
-        //background music
+    //background music
 	std::string filename = "Sound/Ten_Seconds_to_Rush.wav";
 	if (this->reserveAudio(filename, true, sid)){
-		std::cout << "background music loaded" << std::endl;
                 backgroundMusicSource = sourceInfo[sid].source;
                 this->loadStartBackground();
         }
-	std::cout << "background music loaded" << std::endl;
 
 
-        //filename = "data/watercraft/sounds/explosion.wav";
-        //default explosion sound for all entities
-        if (this->reserveAudio(filename, false, sid)){
-            battleSoundSource = sourceInfo[sid].source;
-            alSourcei(this->battleSoundSource, AL_REFERENCE_DISTANCE, 2000.0f);
-            alSourcei(this->battleSoundSource, AL_MAX_DISTANCE, 8000.0f);
-        }
+/*	filename = "Sound/Dragon Roar.wav";
+	if (this->reserveAudio(filename, false, sid)){
+	        fireballSource = sourceInfo[sid].source;
+	        alSourcei(this->fireballSource, AL_REFERENCE_DISTANCE, 2000.0f);
+	        alSourcei(this->fireballSource, AL_MAX_DISTANCE, 8000.0f);
+	    } */
 
-	return;
+
+   filename = "Sound/Fireball.wav";
+   if (this->reserveAudio(filename, false, sid)){
+            fireballSource = sourceInfo[sid].source;
+            alSourcei(this->fireballSource, AL_REFERENCE_DISTANCE, 2000.0f);
+            alSourcei(this->fireballSource, AL_MAX_DISTANCE, 8000.0f);
+    }
 
 }
 
@@ -556,12 +558,14 @@ bool OgreSND::SoundMgr::reserveAudio(std::string filename, bool loop, unsigned i
 
 	resetSource(this->sourceInfo[index].source);
 
+
 	if(loop){
 		alSourcei(this->sourceInfo[index].source, AL_LOOPING, AL_TRUE);
 		if(printError("Source looping") < 0){
 			return false;
 		}
 	}
+
 	/*******************************************************************************************/
 	sourceInfoIndex = index; // to be returned**************************************
 	/*******************************************************************************************/
@@ -570,6 +574,7 @@ bool OgreSND::SoundMgr::reserveAudio(std::string filename, bool loop, unsigned i
 	if (printError("Error in binding source to buffer for ") < 0){
 		return false;
 	}
+
 	return true; //return error code
 }
 
