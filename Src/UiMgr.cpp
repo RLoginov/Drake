@@ -30,7 +30,8 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	fireballTimer = 2;
 	fireballsReady = 51;
 	readyToFire = true;
-	shootTimer = 1;
+	shootTimer = 5;
+	score = 0.5;
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
@@ -76,6 +77,7 @@ void UiMgr::tick(float dt){
 	splashScreenTimer -= dt;
 	instructionScreenTimer -= dt;
 	downTimer -= dt;
+	shootTimer -= dt;
 
 	// display time and lives remaining
 	if(gameStart)
@@ -87,9 +89,9 @@ void UiMgr::tick(float dt){
 			{
 				shootTimer--;
 
-				if(shootTimer == 0)
+				if(shootTimer < 0)
 				{
-					shootTimer = 1;
+					shootTimer = 0.5;
 					readyToFire = true;
 				}
 			}
@@ -139,6 +141,7 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
 				mTrayMgr->destroyWidget("fireball");
+				mTrayMgr->destroyWidget("score");
 				mTrayMgr->showBackdrop("credits");
 			}
 
@@ -173,12 +176,18 @@ void UiMgr::tick(float dt){
 
 		if(gameStart != false)
 		{
+
+			cout << endl << score << endl << endl;
+
+
 		fireballsToString();
 		timeRemainingToString();
 		livesRemainingToString();
+		scoreToString();
 		timeLabel->setCaption(timeText);
 		testLabel->setCaption(livesText);
 		fireballLabel->setCaption(fireballText);
+		scoreLabel->setCaption(scoreText);
 		}
 	}
 }
@@ -235,13 +244,14 @@ void UiMgr::buttonHit(OgreBites::Button *b){
     	if(!gameStart)
     	{
     		gameStart = true;
-    		tensSecondsRemaining = 0;
+    		tensSecondsRemaining = 10;
     		onesSecondsRemaining = 0;
-    		minutesRemaining = 2;
+    		minutesRemaining = 0;
     		lives = 3;
     		testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
     		fireballLabel = mTrayMgr->createLabel(OgreBites::TL_TOP, "fireball", fireballText, 200);
     		timeLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "time", timeText, 200);
+    		scoreLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "score", scoreText, 200);
     		mTrayMgr->destroyWidget("MyButton");
     	}
     }
@@ -280,8 +290,12 @@ void UiMgr::fireballsToString(){
 }
 
 
-
-
+void UiMgr::scoreToString(){
+	// convert fireballs ready to string
+	scoreText = "Score: ";
+	scoreString = to_string(score);
+	scoreText.append(scoreString);
+}
 
 
 
