@@ -228,6 +228,10 @@ void GameMgr::shootFireball(float dt)
       spawnFire(Ogre::Vector3(engine->inputMgr->clickPoint.x,500,engine->inputMgr->clickPoint.z));
 
       fireballActive = false;
+
+      fireballs[engine->uiMgr->fireballsReady]->setVisible(false);
+
+      engine->uiMgr->score += 100;
    }
 }
 
@@ -237,7 +241,6 @@ void GameMgr::spawnFire(Ogre::Vector3 position)
    {
       fireNodes[engine->uiMgr->fireballsReady]->setPosition(position);
    }
-
 }
 
 void GameMgr::createMissile()

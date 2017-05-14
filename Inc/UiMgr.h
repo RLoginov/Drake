@@ -70,9 +70,15 @@ public:
 	float downTimer;
 	OgreBites::Label* timeLabel;
 
+	Ogre::String scoreText;
+	Ogre::String scoreString;
+	int score;
+	OgreBites::Label* scoreLabel;
+
 	void timeRemainingToString();
 	void livesRemainingToString();
 	void fireballsToString();
+	void scoreToString();
 
 	bool gameStart;
 
@@ -85,7 +91,7 @@ public:
 	Ogre::OverlayElement* plusImage;
 
 	bool readyToFire;
-	int shootTimer;
+	float shootTimer;
 };
 
 #endif /* INC_UIMGR_H_ */
