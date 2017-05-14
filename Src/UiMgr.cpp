@@ -30,8 +30,8 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	fireballTimer = 2;
 	fireballsReady = 51;
 	readyToFire = true;
-	shootTimer = 5;
-	score = 0.5;
+	shootTimer = 0.5;
+	score = 0;
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
@@ -77,7 +77,8 @@ void UiMgr::tick(float dt){
 	splashScreenTimer -= dt;
 	instructionScreenTimer -= dt;
 	downTimer -= dt;
-	shootTimer -= dt;
+	if(readyToFire == false)
+	   shootTimer -= dt;
 
 	// display time and lives remaining
 	if(gameStart)
@@ -87,15 +88,12 @@ void UiMgr::tick(float dt){
 		{
 			if(readyToFire == false)
 			{
-				shootTimer--;
-
 				if(shootTimer < 0)
 				{
 					shootTimer = 0.5;
 					readyToFire = true;
 				}
 			}
-
 
 			// check if going to change minutes and tens place seconds
 			if(onesSecondsRemaining == 0)
@@ -141,7 +139,6 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
 				mTrayMgr->destroyWidget("fireball");
-				mTrayMgr->destroyWidget("score");
 				mTrayMgr->showBackdrop("credits");
 			}
 
@@ -176,10 +173,6 @@ void UiMgr::tick(float dt){
 
 		if(gameStart != false)
 		{
-
-			cout << endl << score << endl << endl;
-
-
 		fireballsToString();
 		timeRemainingToString();
 		livesRemainingToString();
@@ -244,8 +237,8 @@ void UiMgr::buttonHit(OgreBites::Button *b){
     	if(!gameStart)
     	{
     		gameStart = true;
-    		tensSecondsRemaining = 10;
-    		onesSecondsRemaining = 0;
+    		tensSecondsRemaining = 0;
+    		onesSecondsRemaining = 10;
     		minutesRemaining = 0;
     		lives = 3;
     		testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
