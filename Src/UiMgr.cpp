@@ -28,13 +28,15 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	plus = 0;
 	fireballLabel = 0;
 	fireballTimer = 2;
-	fireballsReady = 21;
+	fireballsReady = 51;
+	readyToFire = true;
+	shootTimer = 1;
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
 	engine->gfxMgr->ogreSceneManager->addRenderQueueListener(mOverlaySystem);
 
-	//Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
+	//Ogre::WindowEventUtilitiereadyToFires::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
 
 	// display default lives and time remaining
 	livesRemainingToString();
@@ -81,6 +83,18 @@ void UiMgr::tick(float dt){
 		// one second has passed
 		if(downTimer < 0)
 		{
+			if(readyToFire == false)
+			{
+				shootTimer--;
+
+				if(shootTimer == 0)
+				{
+					shootTimer = 1;
+					readyToFire = true;
+				}
+			}
+
+
 			// check if going to change minutes and tens place seconds
 			if(onesSecondsRemaining == 0)
 			{
@@ -119,7 +133,7 @@ void UiMgr::tick(float dt){
 			}
 
 			// ran out of time
-			if((minutesRemaining == 0 && tensSecondsRemaining == 0 && onesSecondsRemaining == 0) || lives == 0)
+			if((minutesRemaining == 0 && tensSecondsRemaining == 0 && onesSecondsRemaining == 0) || lives <= 0)
 			{
 				gameStart = false;
 				mTrayMgr->destroyWidget("lives");
@@ -136,11 +150,25 @@ void UiMgr::tick(float dt){
               {
                 if((*it)->hit == true)
                 {
-                  (*it)->hit = false;
                   lives--;
+                  break;
                 }
               }
+
 			}
+
+			for (std::list<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it !=
+							 engine->entityMgr->entities.end(); ++it)
+						{
+			              if((*it)->meshfile == "ogrehead.mesh")
+			              {
+			                if((*it)->hit == true)
+			                {
+			                  (*it)->hit = false;
+			                }
+			              }
+
+						}
 		}
 
 		if(gameStart != false)

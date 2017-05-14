@@ -87,21 +87,20 @@ void AI::Tick(float dt)
     entity->desiredSpeed = entity->maxSpeed;
 
     //if(hitTimer < 0)
-	   checkForCollision(hitTimer);
+	checkForCollision(hitTimer);
   }
 }
 
 void AI::checkForCollision(float dt)
 {
+     Ogre::Real xDist = entity->pos.x - entity->leader->ogreSceneNode->getPosition().x;
+     Ogre::Real zDist = entity->pos.z - entity->leader->ogreSceneNode->getPosition().z;
 
 
-  if(entity->pos.x == entity->leader->ogreSceneNode->getPosition().x ||
-	 entity->pos.z == entity->leader->ogreSceneNode->getPosition().z)
-  {
-    std::cout << "AAAAAAAAAAAA" << std::endl;
-    //hitTimer = 1;
-    entity->hit = true;
-  }
+     if(xDist <= 5.0 && xDist >= -5.0 && zDist >= -5.0 && zDist <= 5.0)
+     {
+       std::cout << "AAAAAAAAAAAA" << std::endl;
+       entity->hit = true;
+     }
 
-  //entity->hit = false;
 }

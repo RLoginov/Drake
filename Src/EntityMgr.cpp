@@ -24,6 +24,7 @@ void EntityMgr::tick(float dt){
 		(*it)->Tick(dt);
 		if ((*it)->isSelected)
 			this->selectedEntity = (*it);
+
 	}
 }
 

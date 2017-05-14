@@ -15,6 +15,7 @@
 #include <Terrain/OgreTerrain.h>
 #include <Terrain/OgreTerrainGroup.h>
 #include <OgreRoot.h>
+#include <OgreMeshManager.h>
 
 #include "../Inc/mgr.h"
 #include "../Inc/Entity381.h"
@@ -30,7 +31,9 @@ private:
 	std::vector<std::vector<int> > getHeightMatrix(const std::string& filename);
     void genCity(const std::vector<std::vector<int> >& map);
 
-    void createFire(Ogre::Vector3 position);
+    void createFireballs();
+    void createFires();
+
     void createMissile();
 
 public:
@@ -41,8 +44,8 @@ public:
 	virtual void loadLevel();
 	virtual void stop();
 	
-    void createFireball();
-    void shootFireball(Ogre::SceneNode* fireballNode, float dt);
+    void shootFireball(float dt);
+    void spawnFire(Ogre::Vector3 position);
 
 
 	//---------------------------------
@@ -50,10 +53,12 @@ public:
 	Ogre::Plane plane;
 	int headCounter, fireballCounter;
 	int xSpawn, zSpawn;
-	Ogre::SceneNode* fireballNode;
+	std::vector<Ogre::ParticleSystem*> fireballs;
+	std::vector<Ogre::SceneNode*> fireballNodes;
+	std::vector<Ogre::ParticleSystem*> fires;
+	std::vector<Ogre::SceneNode*> fireNodes;
 	bool fireballActive;
-	Ogre::Vector3 fireballPos;
-	Ogre::Vector3 fireballTarget;
+
 };
 
 

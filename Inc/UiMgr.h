@@ -83,6 +83,9 @@ public:
 
 	Ogre::OverlayContainer* plus;
 	Ogre::OverlayElement* plusImage;
+
+	bool readyToFire;
+	int shootTimer;
 };
 
 #endif /* INC_UIMGR_H_ */

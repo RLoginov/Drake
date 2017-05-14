@@ -109,16 +109,15 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw){
 
 bool InputMgr::keyPressed(const OIS::KeyEvent &arg)
 {
-	float fly = 500.0f;
-	float rush = 500.0f;
-	float rotate = 0.1f;
 	Ogre::Vector3 temp;
-	Ogre::Vector3 dirVec = Ogre::Vector3::ZERO;
 
 	switch (arg.key)
 	{
 	  case OIS::KC_LSHIFT:
 		lShiftDown = true;
+		break;
+
+	  default:
 		break;
 	}
 	return true;
@@ -128,11 +127,15 @@ bool InputMgr::keyReleased(const OIS::KeyEvent &arg){
 
 	switch (arg.key)
 	{
-	case OIS::KC_LSHIFT:
+	  case OIS::KC_LSHIFT:
 		lShiftDown = false;
 		break;
-	case OIS::KC_TAB:
+
+	  case OIS::KC_TAB:
 		engine->entityMgr->SelectNextEntity();
+		break;
+
+	  default:
 		break;
 	}
 
@@ -147,18 +150,22 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent &arg)
 
 bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    std::cout << "mouse clicked" << std::endl;
     Ogre::Ray mouseRay;
     Ogre::Real screenWidth;
     Ogre::Real screenHeight;
     Ogre::Real offsetX;
     Ogre::Real offsetY;
     std::pair<bool, float> result;
-    Entity381* nearest;
-    if(engine->uiMgr->fireballsReady > 0)
+
+    if(engine->uiMgr->fireballsReady > 0 && engine->uiMgr->readyToFire)
+    {
        engine->uiMgr->fireballsReady--;
+    }
 
   	if (engine->uiMgr->mTrayMgr->injectMouseDown(arg, id)) return true;
+
+    if(engine->uiMgr->fireballsReady == 0)
+       return true;
 
 
     screenWidth = Ogre::Root::getSingleton().getAutoCreatedWindow()->getWidth();
@@ -170,13 +177,23 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
     mouseRay = engine->gfxMgr->ogreCamera->getCameraToViewportRay(offsetX, offsetY);
     result = mouseRay.intersects(engine->gameMgr->plane);
 
-    if (result.first)
+    if (result.first && engine->uiMgr->readyToFire)
     {
+      engine->uiMgr->readyToFire = false;
   	  clickPoint = mouseRay.getPoint(result.second);
+   	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
+   	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
 
-	  engine->gameMgr->createFireball();
+	  switch (id)
+	  {
+	    case OIS::MB_Left:
+	      engine->soundMgr->playAudio(engine->soundMgr->fireballSource, true);
+	  	  engine->gameMgr->fireballActive = true;
+		  break;
 
-	  engine->gameMgr->fireballActive = true;
+	    default:
+		  break;
+	  }
     }
 
   	return true;
@@ -194,8 +211,8 @@ void InputMgr::UpdatePosition(float dt)
 {
 	float fly = 1000.0f;
 	float rush = 2000.0f;
-	float turn = 0.1f;
-	float quickturn = 0.2f;
+	float turn = 0.5f;
+	float quickturn = 0.7f;
 
 	Ogre::Vector3 temp;
 
@@ -294,7 +311,8 @@ void InputMgr::UpdatePosition(float dt)
 	  } */
 
     engine->entityMgr->selectedEntity->ogreSceneNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
-	  engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+	engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
+    engine->soundMgr->playAudio(engine->soundMgr->flapSource, true);
 }
 
 void InputMgr::UpdateSelection(float dt){

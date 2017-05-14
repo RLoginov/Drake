@@ -8,6 +8,7 @@
 #include "../Inc/Entity381.h"
 #include "../Inc/Types.h"
 #include "../Inc/Aspect.h"
+#include <engine.h>
 
 
 unsigned int Entity381::nextId = 0;
