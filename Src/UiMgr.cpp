@@ -30,8 +30,8 @@ UiMgr::UiMgr(Engine* eng): Mgr(eng){
 	fireballTimer = 2;
 	fireballsReady = 51;
 	readyToFire = true;
-	shootTimer = 5;
-	score = 0.5;
+	shootTimer = 0.5;
+	score = 0;
 
 	// Initialize the OverlaySystem (changed for Ogre 1.9)
 	mOverlaySystem = new Ogre::OverlaySystem();
@@ -77,7 +77,8 @@ void UiMgr::tick(float dt){
 	splashScreenTimer -= dt;
 	instructionScreenTimer -= dt;
 	downTimer -= dt;
-	shootTimer -= dt;
+	if(readyToFire == false)
+	   shootTimer -= dt;
 
 	// display time and lives remaining
 	if(gameStart)
@@ -87,15 +88,12 @@ void UiMgr::tick(float dt){
 		{
 			if(readyToFire == false)
 			{
-				shootTimer--;
-
 				if(shootTimer < 0)
 				{
 					shootTimer = 0.5;
 					readyToFire = true;
 				}
 			}
-
 
 			// check if going to change minutes and tens place seconds
 			if(onesSecondsRemaining == 0)

@@ -67,7 +67,7 @@ void GameMgr::tick(float dt)
     zSpawn += 100;
   }
 
-  if(fireballActive && engine->uiMgr->readyToFire)
+  if(fireballActive)
   {
     shootFireball(dt);
   }

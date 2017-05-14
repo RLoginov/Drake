@@ -184,6 +184,7 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
    	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->setPosition(engine->entityMgr->selectedEntity->ogreSceneNode->getPosition());
    	  engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->translate(Ogre::Vector3(0,0,-100), Ogre::Node::TS_LOCAL);
 
+
 	  switch (id)
 	  {
 	    case OIS::MB_Left:
