@@ -139,9 +139,8 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
 				mTrayMgr->destroyWidget("fireball");
-				mTrayMgr->showBackdrop("credits");
-				engine->soundMgr->disable();
-			}
+				mTrayMgr->showBackdrop("ogre");
+				engine->soundMgr->disable();			}
 
 
 			for (std::list<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it !=
@@ -239,8 +238,8 @@ void UiMgr::buttonHit(OgreBites::Button *b){
     	{
     		gameStart = true;
     		tensSecondsRemaining = 0;
-    		onesSecondsRemaining = 10;
-    		minutesRemaining = 2;
+    		onesSecondsRemaining = 0;
+    		minutesRemaining = 3;
     		lives = 3;
     		testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
     		fireballLabel = mTrayMgr->createLabel(OgreBites::TL_TOP, "fireball", fireballText, 200);
