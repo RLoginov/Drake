@@ -33,6 +33,7 @@ private:
 
     void createFireballs();
     void createFires();
+    void createSmoke();
 
     void createMissile();
 
@@ -44,8 +45,9 @@ public:
 	virtual void loadLevel();
 	virtual void stop();
 	
-    void shootFireball(float dt);
-    void spawnFire(Ogre::Vector3 position);
+    void shootFireball(float dt, int fireballNum);
+    void spawnFire(int firebalNum, Ogre::Vector3 position);
+    void spawnSmoke(int fireballNum, Ogre::Vector3 position);
 
 
 	//---------------------------------
@@ -57,7 +59,9 @@ public:
 	std::vector<Ogre::SceneNode*> fireballNodes;
 	std::vector<Ogre::ParticleSystem*> fires;
 	std::vector<Ogre::SceneNode*> fireNodes;
-	bool fireballActive;
+	std::vector<Ogre::ParticleSystem*> smoke;
+	std::vector<Ogre::SceneNode*> smokeNodes;
+    std::vector<bool> fireballActives;
 
 };
 

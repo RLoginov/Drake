@@ -28,7 +28,7 @@ GfxMgr::GfxMgr(Engine *eng): Mgr(eng)
 	createCamera();
 	createViewport();
 
-	ground = new Terrain(this);
+	//ground = new Terrain(this);
 }
 
 void GfxMgr::loadConfig(Ogre::ConfigFile cf){
@@ -103,7 +103,7 @@ void GfxMgr::init()
 	ogreLight->setSpecularColour(Ogre::ColourValue(.1, .1, .1));
 	ogreLight->setPosition(20.0, 80.0, 50.0);
 
-	ground->init();
+	//ground->init();
 }
 
 void GfxMgr::loadLevel(){

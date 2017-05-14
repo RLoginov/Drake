@@ -68,7 +68,7 @@ void Engine::shutdown(){
 	entityMgr->stop();
 	gameMgr->stop();
 	uiMgr->stop();
-	//soundMgr->stop();
+	soundMgr->stop();
 }
 
 void Engine::run(){
