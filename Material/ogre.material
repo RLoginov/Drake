@@ -1,0 +1,15 @@
+material ogre
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture ogre.jpg
+			}
+		}
+	}
+}
+
+

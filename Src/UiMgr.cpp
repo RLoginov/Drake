@@ -139,7 +139,7 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
 				mTrayMgr->destroyWidget("fireball");
-				mTrayMgr->showBackdrop("credits");
+				mTrayMgr->showBackdrop("ogre");
 			}
 
 
