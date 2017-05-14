@@ -139,7 +139,6 @@ void UiMgr::tick(float dt){
 				mTrayMgr->destroyWidget("lives");
 				mTrayMgr->destroyWidget("time");
 				mTrayMgr->destroyWidget("fireball");
-				mTrayMgr->destroyWidget("score");
 				mTrayMgr->showBackdrop("credits");
 			}
 
@@ -174,10 +173,6 @@ void UiMgr::tick(float dt){
 
 		if(gameStart != false)
 		{
-
-			cout << endl << score << endl << endl;
-
-
 		fireballsToString();
 		timeRemainingToString();
 		livesRemainingToString();
@@ -242,8 +237,8 @@ void UiMgr::buttonHit(OgreBites::Button *b){
     	if(!gameStart)
     	{
     		gameStart = true;
-    		tensSecondsRemaining = 10;
-    		onesSecondsRemaining = 0;
+    		tensSecondsRemaining = 0;
+    		onesSecondsRemaining = 10;
     		minutesRemaining = 0;
     		lives = 3;
     		testLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "lives", livesText, 200);
