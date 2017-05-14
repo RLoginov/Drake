@@ -262,7 +262,7 @@ void InputMgr::UpdatePosition(float dt)
 		  }
 	  } */
 
-	  if (keyboard->isKeyDown(OIS::KC_Q))
+	  if (keyboard->isKeyDown(OIS::KC_E))
 	  {
 		  if (lShiftDown)
 		  {
@@ -279,7 +279,7 @@ void InputMgr::UpdatePosition(float dt)
 
 	  }
 
-	  if (keyboard->isKeyDown(OIS::KC_E))
+	  if (keyboard->isKeyDown(OIS::KC_Q))
 	  {
 		  if (lShiftDown)
 		  {
