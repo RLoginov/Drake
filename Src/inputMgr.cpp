@@ -189,7 +189,6 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 	  {
 	    case OIS::MB_Left:
 	      engine->soundMgr->playAudio(engine->soundMgr->fireballSource, true);
-	      cout << engine->uiMgr->fireballsReady << endl;
 	  	  engine->gameMgr->fireballActives[engine->uiMgr->fireballsReady] = true;
 		  break;
 
@@ -213,8 +212,8 @@ void InputMgr::UpdatePosition(float dt)
 {
 	float fly = 1000.0f;
 	float rush = 2000.0f;
-	float turn = 0.5f;
-	float quickturn = 0.7f;
+	float turn = 0.7f;
+	float quickturn = 1.0f;
 
 	Ogre::Vector3 temp;
 
@@ -314,7 +313,7 @@ void InputMgr::UpdatePosition(float dt)
 
     engine->entityMgr->selectedEntity->ogreSceneNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
 	engine->gfxMgr->cameraNode->translate(dirVec * dt, Ogre::Node::TS_LOCAL);
-    engine->soundMgr->playAudio(engine->soundMgr->flapSource, true);
+    //engine->soundMgr->playAudio(engine->soundMgr->flapSource, false);
 }
 
 void InputMgr::UpdateSelection(float dt){

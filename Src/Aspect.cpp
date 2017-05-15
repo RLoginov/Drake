@@ -55,7 +55,7 @@ void Physics::Tick(float dt)
   if(this->entity->meshfile == "ogrehead.mesh")
   {
 
-    entity->speed = 600;
+    entity->speed = 750;
     entity->pos += entity->vel * dt;
     entity->heading = entity->desiredHeading;
   }
@@ -97,7 +97,7 @@ void AI::checkForCollision(float dt)
      Ogre::Real zDist = entity->pos.z - entity->leader->ogreSceneNode->getPosition().z;
 
 
-     if(xDist <= 5.0 && xDist >= -5.0 && zDist >= -5.0 && zDist <= 5.0)
+     if(xDist <= 10.0 && xDist >= -10.0 && zDist >= -10.0 && zDist <= 10.0)
      {
        std::cout << "AAAAAAAAAAAA" << std::endl;
        entity->hit = true;

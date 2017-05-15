@@ -21,8 +21,8 @@ using std::string;
 GameMgr::GameMgr(Engine *engine): Mgr(engine)
 {
   headCounter = 0;
-  xSpawn = 1000;
-  zSpawn = 1000;
+  xSpawn = -435;
+  zSpawn = -4907;
 }
 
 GameMgr::~GameMgr(){
@@ -31,16 +31,15 @@ GameMgr::~GameMgr(){
 
 void GameMgr::init()
 {
-  cout << engine->uiMgr->fireballsReady << endl;
-  fireballs.resize(engine->uiMgr->fireballsReady - 1);
-  fireballNodes.resize(engine->uiMgr->fireballsReady - 1);
-  fires.resize(engine->uiMgr->fireballsReady - 1);
-  fireNodes.resize(engine->uiMgr->fireballsReady - 1);
-  smoke.resize(engine->uiMgr->fireballsReady - 1);
-  smokeNodes.resize(engine->uiMgr->fireballsReady - 1);
+  fireballs.resize(engine->uiMgr->fireballsReady + 10);
+  fireballNodes.resize(engine->uiMgr->fireballsReady + 10);
+  fires.resize(engine->uiMgr->fireballsReady + 10);
+  fireNodes.resize(engine->uiMgr->fireballsReady + 10);
+  smoke.resize(engine->uiMgr->fireballsReady + 10);
+  smokeNodes.resize(engine->uiMgr->fireballsReady + 10);
 
-  fireballActives.resize(engine->uiMgr->fireballsReady - 1);
-
+  fireballActives.resize(engine->uiMgr->fireballsReady + 10);
+  firePositions.resize(engine->uiMgr->fireballsReady + 10);
 }
 
 
@@ -62,7 +61,7 @@ void GameMgr::stop(){
 
 void GameMgr::tick(float dt)
 {
-  if(headCounter < 1000)
+  if(headCounter < 500)
   {
     createMissile();
 
@@ -73,7 +72,7 @@ void GameMgr::tick(float dt)
     zSpawn += 100;
   }
 
-  for (int i = 0; i < engine->uiMgr->fireballsReady + 1; i++)
+  for (int i = 0; i < engine->uiMgr->fireballsReady + 8; i++)
   {
      if(this->fireballActives[i])
      {
@@ -243,24 +242,29 @@ void GameMgr::createSmoke()
 
 void GameMgr::shootFireball(float dt, int fireballNum)
 {
-   Ogre::Vector3 diff;
+   this->firePositions[fireballNum] = engine->inputMgr->clickPoint - fireballNodes[fireballNum]->getPosition();
 
-   diff = engine->inputMgr->clickPoint - fireballNodes[fireballNum]->getPosition();
+   fireballNodes[fireballNum]->translate(this->firePositions[fireballNum] * dt, Ogre::Node::TS_LOCAL);
 
-   fireballNodes[fireballNum]->translate(diff * dt, Ogre::Node::TS_LOCAL);
-
-   if(fireballNodes[engine->uiMgr->fireballsReady]->getPosition().y <= 500.0f)
+   if( fireballNodes[fireballNum]->getPosition().y <= 500.0f )
    {
-      spawnFire(fireballNum, Ogre::Vector3(engine->inputMgr->clickPoint.x,500,engine->inputMgr->clickPoint.z));
+	  if( fireballNodes[fireballNum]->getPosition().z >= -7700.0f &&
+		  fireballNodes[fireballNum]->getPosition().z <= 750.0f &&
+		  fireballNodes[fireballNum]->getPosition().x >= -8600.0f &&
+		  fireballNodes[fireballNum]->getPosition().x <= 27000.0f )
+	  {
+        spawnFire(fireballNum, Ogre::Vector3(engine->inputMgr->clickPoint.x,500,engine->inputMgr->clickPoint.z));
 
-      spawnSmoke(fireballNum, Ogre::Vector3(engine->inputMgr->clickPoint.x,1500,engine->inputMgr->clickPoint.z));
+        spawnSmoke(fireballNum, Ogre::Vector3(engine->inputMgr->clickPoint.x,1500,engine->inputMgr->clickPoint.z));
+
+        engine->uiMgr->score += 100;
+	  }
 
       this->fireballActives[fireballNum] = false;
 
-      fireballs[engine->uiMgr->fireballsReady]->setVisible(false);
-
-      engine->uiMgr->score += 100;
+      fireballs[fireballNum]->setVisible(false);
    }
+
 }
 
 void GameMgr::spawnFire(int fireballNum, Ogre::Vector3 position)

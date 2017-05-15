@@ -61,7 +61,9 @@ public:
 	std::vector<Ogre::SceneNode*> fireNodes;
 	std::vector<Ogre::ParticleSystem*> smoke;
 	std::vector<Ogre::SceneNode*> smokeNodes;
+
     std::vector<bool> fireballActives;
+    std::vector<Ogre::Vector3> firePositions;
 
 };
 
