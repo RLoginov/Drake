@@ -242,14 +242,12 @@ void GameMgr::createSmoke()
 
 void GameMgr::shootFireball(float dt, int fireballNum)
 {
-   this->firePositions[fireballNum] = engine->inputMgr->clickPoint - fireballNodes[fireballNum]->getPosition();
-
    fireballNodes[fireballNum]->translate(this->firePositions[fireballNum] * dt, Ogre::Node::TS_LOCAL);
 
    if( fireballNodes[fireballNum]->getPosition().y <= 500.0f )
    {
 	  if( fireballNodes[fireballNum]->getPosition().z >= -7700.0f &&
-		  fireballNodes[fireballNum]->getPosition().z <= 750.0f &&
+		  fireballNodes[fireballNum]->getPosition().z <=   750.0f &&
 		  fireballNodes[fireballNum]->getPosition().x >= -8600.0f &&
 		  fireballNodes[fireballNum]->getPosition().x <= 27000.0f )
 	  {

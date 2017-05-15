@@ -188,6 +188,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 	  switch (id)
 	  {
 	    case OIS::MB_Left:
+	      engine->gameMgr->firePositions[engine->uiMgr->fireballsReady] =
+	    	 engine->inputMgr->clickPoint - engine->gameMgr->fireballNodes[engine->uiMgr->fireballsReady]->getPosition();
+
 	      engine->soundMgr->playAudio(engine->soundMgr->fireballSource, true);
 	  	  engine->gameMgr->fireballActives[engine->uiMgr->fireballsReady] = true;
 		  break;

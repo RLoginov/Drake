@@ -55,7 +55,7 @@ void Physics::Tick(float dt)
   if(this->entity->meshfile == "ogrehead.mesh")
   {
 
-    entity->speed = 750;
+    entity->speed = 1500;
     entity->pos += entity->vel * dt;
     entity->heading = entity->desiredHeading;
   }
